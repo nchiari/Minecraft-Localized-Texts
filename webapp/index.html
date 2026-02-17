@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generador Rawtext/Titleraw</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <h1>Generador de comandos rawtex / titleraw</h1>
+    <p class="subtitle">Minecraft Bedrock / Education</p>
+
+    <div class="row two-cols">
+      <div class="field">
+        <label for="commandType">Tipo de comando</label>
+        <select id="commandType">
+          <option value="rawtext">rawtext</option>
+          <option value="titleraw">titleraw</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="contentMode">Tipo de contenido</label>
+        <select id="contentMode">
+          <option value="direct">Texto directo</option>
+          <option value="localized">Texto localizado</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="titlerawOptions" class="row two-cols hidden">
+      <div id="targetGroup" class="field">
+        <label for="targetSelector">Selector para titleraw</label>
+        <input
+          id="targetSelector"
+          type="text"
+          value="@a"
+          placeholder="@a, @p, @e[type=...,tag=...]"
+          autocomplete="off"
+        >
+      </div>
+
+      <div id="titleModeGroup" class="field">
+        <label for="titleMode">Visualización</label>
+        <select id="titleMode">
+          <option value="title">title</option>
+          <option value="subtitle">subtitle</option>
+          <option value="actionbar">actionbar</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="localizationGroup" class="hidden">
+      <label for="localizationKey">Key de localización</label>
+      <input
+        id="localizationKey"
+        type="text"
+        placeholder="dialogue.welcome"
+        autocomplete="off"
+      >
+    </div>
+
+    <label id="visibleTextLabel" for="visibleText">Texto visible</label>
+    <textarea
+      id="visibleText"
+      rows="5"
+      placeholder="Escribe tu texto aquí. Ejemplo: §l§aHola mundo"
+    ></textarea>
+
+    <label for="output">Salida</label>
+    <textarea id="output" rows="4" readonly></textarea>
+
+    <button id="copyButton" type="button">Copiar comando</button>
+
+    <div id="langSection" class="hidden">
+      <label for="langOutput">Salida .lang</label>
+      <textarea id="langOutput" rows="3" readonly></textarea>
+      <button id="copyLangButton" type="button" class="secondary">Copiar .lang</button>
+    </div>
+
+    <p id="status" class="status" aria-live="polite"></p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
