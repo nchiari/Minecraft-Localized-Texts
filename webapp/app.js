@@ -1,7 +1,8 @@
 const commandType = document.getElementById("commandType");
 const contentMode = document.getElementById("contentMode");
-const titlerawOptions = document.getElementById("titlerawOptions");
+const targetedCommandOptions = document.getElementById("targetedCommandOptions");
 const targetGroup = document.getElementById("targetGroup");
+const targetSelectorLabel = document.getElementById("targetSelectorLabel");
 const targetSelector = document.getElementById("targetSelector");
 const titleModeGroup = document.getElementById("titleModeGroup");
 const titleMode = document.getElementById("titleMode");
@@ -49,6 +50,11 @@ function buildCommand() {
     return `/titleraw ${selector} ${titleMode.value} ${rawtextJson}`;
   }
 
+  if (type === "tellraw") {
+    const selector = targetSelector.value.trim() || "@a";
+    return `/tellraw ${selector} ${rawtextJson}`;
+  }
+
   return rawtextJson;
 }
 
@@ -58,12 +64,22 @@ function setStatus(message) {
 
 function updateVisibility() {
   const isTitleraw = commandType.value === "titleraw";
+  const isTellraw = commandType.value === "tellraw";
+  const usesTargetSelector = isTitleraw || isTellraw;
   const isLocalized = contentMode.value === "localized";
-  titlerawOptions.classList.toggle("hidden", !isTitleraw);
-  targetGroup.classList.toggle("hidden", !isTitleraw);
+  targetedCommandOptions.classList.toggle("hidden", !usesTargetSelector);
+  targetGroup.classList.toggle("hidden", !usesTargetSelector);
   titleModeGroup.classList.toggle("hidden", !isTitleraw);
   localizationGroup.classList.toggle("hidden", !isLocalized);
   langSection.classList.toggle("hidden", !isLocalized);
+
+  if (isTitleraw) {
+    targetSelectorLabel.textContent = "Selector para titleraw";
+  } else if (isTellraw) {
+    targetSelectorLabel.textContent = "Selector para tellraw";
+  } else {
+    targetSelectorLabel.textContent = "Selector";
+  }
 
   if (isLocalized) {
     visibleTextLabel.textContent = "Texto para archivo .lang";
