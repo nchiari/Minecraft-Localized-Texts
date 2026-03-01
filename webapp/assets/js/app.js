@@ -16,6 +16,68 @@ const langOutput = document.getElementById("langOutput");
 const copyButton = document.getElementById("copyButton");
 const copyLangButton = document.getElementById("copyLangButton");
 const status = document.getElementById("status");
+const langButtons = document.querySelectorAll(".lang-btn");
+const contentModeDirect = document.getElementById("contentModeDirect");
+const contentModeLocalized = document.getElementById("contentModeLocalized");
+
+const I18N = {
+  es: {
+    "app.title": "Generador de comandos",
+    "app.subtitle": "Minecraft Bedrock / Education",
+    "label.commandType": "Tipo de comando",
+    "label.contentMode": "Tipo de contenido",
+    "label.visualization": "Visualizacion",
+    "label.localizationKey": "Key de localizacion",
+    "label.output": "Salida",
+    "label.langOutput": "Salida .lang",
+    "button.copyCommand": "Copiar comando",
+    "button.copyLang": "Copiar .lang",
+    "footer.copyright": "Copyright Nico Chiari · Powered by ☕",
+    "footer.feedback": "Enviar feedback",
+    "option.direct": "Texto directo",
+    "option.localized": "Texto localizado",
+    "label.selector.titleraw": "Selector para titleraw",
+    "label.selector.tellraw": "Selector para tellraw",
+    "label.selector.default": "Selector",
+    "label.visible.direct": "Texto visible",
+    "label.visible.localized": "Texto para archivo .lang",
+    "placeholder.visible.direct": "Escribe tu texto aqui. Ejemplo: §l§aHola mundo",
+    "placeholder.visible.localized": "Texto que ira en: key=texto",
+    "status.empty": "No hay contenido para copiar.",
+    "status.copy.command.ok": "Comando copiado.",
+    "status.copy.lang.ok": "Contenido .lang copiado.",
+    "status.copy.fail": "No se pudo copiar automaticamente."
+  },
+  en: {
+    "app.title": "Command Generator",
+    "app.subtitle": "Minecraft Bedrock / Education",
+    "label.commandType": "Command type",
+    "label.contentMode": "Content type",
+    "label.visualization": "Display",
+    "label.localizationKey": "Localization key",
+    "label.output": "Output",
+    "label.langOutput": ".lang output",
+    "button.copyCommand": "Copy command",
+    "button.copyLang": "Copy .lang",
+    "footer.copyright": "Copyright Nico Chiari · Powered by ☕",
+    "footer.feedback": "Send feedback",
+    "option.direct": "Direct text",
+    "option.localized": "Localized text",
+    "label.selector.titleraw": "Selector for titleraw",
+    "label.selector.tellraw": "Selector for tellraw",
+    "label.selector.default": "Selector",
+    "label.visible.direct": "Visible text",
+    "label.visible.localized": "Text for .lang file",
+    "placeholder.visible.direct": "Write your text here. Example: §l§aHello world",
+    "placeholder.visible.localized": "Text that will be used in: key=text",
+    "status.empty": "There is no content to copy.",
+    "status.copy.command.ok": "Command copied.",
+    "status.copy.lang.ok": ".lang content copied.",
+    "status.copy.fail": "Could not copy automatically."
+  }
+};
+
+let currentLang = localStorage.getItem("dialogues_app_lang") || "es";
 
 function escapeForJson(text) {
   return text
@@ -62,6 +124,27 @@ function setStatus(message) {
   status.textContent = message;
 }
 
+function t(key) {
+  return I18N[currentLang][key] || I18N.es[key] || key;
+}
+
+function applyI18n() {
+  document.documentElement.lang = currentLang;
+  document.title = `${t("app.title")} - rawtext / titleraw / tellraw`;
+
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    const key = element.getAttribute("data-i18n");
+    element.textContent = t(key);
+  });
+
+  contentModeDirect.textContent = t("option.direct");
+  contentModeLocalized.textContent = t("option.localized");
+
+  langButtons.forEach((button) => {
+    button.setAttribute("aria-pressed", button.dataset.lang === currentLang ? "true" : "false");
+  });
+}
+
 function updateVisibility() {
   const isTitleraw = commandType.value === "titleraw";
   const isTellraw = commandType.value === "tellraw";
@@ -74,19 +157,19 @@ function updateVisibility() {
   langSection.classList.toggle("hidden", !isLocalized);
 
   if (isTitleraw) {
-    targetSelectorLabel.textContent = "Selector para titleraw";
+    targetSelectorLabel.textContent = t("label.selector.titleraw");
   } else if (isTellraw) {
-    targetSelectorLabel.textContent = "Selector para tellraw";
+    targetSelectorLabel.textContent = t("label.selector.tellraw");
   } else {
-    targetSelectorLabel.textContent = "Selector";
+    targetSelectorLabel.textContent = t("label.selector.default");
   }
 
   if (isLocalized) {
-    visibleTextLabel.textContent = "Texto para archivo .lang";
-    visibleText.placeholder = "Texto que irá en: key=texto";
+    visibleTextLabel.textContent = t("label.visible.localized");
+    visibleText.placeholder = t("placeholder.visible.localized");
   } else {
-    visibleTextLabel.textContent = "Texto visible";
-    visibleText.placeholder = "Escribe tu texto aquí. Ejemplo: §l§aHola mundo";
+    visibleTextLabel.textContent = t("label.visible.direct");
+    visibleText.placeholder = t("placeholder.visible.direct");
   }
 
   copyLangButton.disabled = !isLocalized;
@@ -105,7 +188,7 @@ function refreshOutput() {
 
 async function copyText(text, successMessage) {
   if (!text) {
-    setStatus("No hay contenido para copiar.");
+    setStatus(t("status.empty"));
     return;
   }
 
@@ -128,16 +211,16 @@ async function copyText(text, successMessage) {
     if (activeElement && typeof activeElement.focus === "function") {
       activeElement.focus();
     }
-    setStatus(copied ? successMessage : "No se pudo copiar automáticamente.");
+    setStatus(copied ? successMessage : t("status.copy.fail"));
   }
 }
 
 function copyOutput() {
-  return copyText(output.value, "Comando copiado.");
+  return copyText(output.value, t("status.copy.command.ok"));
 }
 
 function copyLangOutput() {
-  return copyText(langOutput.value, "Contenido .lang copiado.");
+  return copyText(langOutput.value, t("status.copy.lang.ok"));
 }
 
 commandType.addEventListener("change", () => {
@@ -150,6 +233,16 @@ contentMode.addEventListener("change", () => {
   refreshOutput();
 });
 
+langButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    currentLang = button.dataset.lang || "es";
+    localStorage.setItem("dialogues_app_lang", currentLang);
+    applyI18n();
+    updateVisibility();
+    refreshOutput();
+  });
+});
+
 targetSelector.addEventListener("input", refreshOutput);
 titleMode.addEventListener("change", refreshOutput);
 localizationKey.addEventListener("input", refreshOutput);
@@ -157,5 +250,9 @@ visibleText.addEventListener("input", refreshOutput);
 copyButton.addEventListener("click", copyOutput);
 copyLangButton.addEventListener("click", copyLangOutput);
 
+if (!I18N[currentLang]) {
+  currentLang = "es";
+}
+applyI18n();
 updateVisibility();
 refreshOutput();

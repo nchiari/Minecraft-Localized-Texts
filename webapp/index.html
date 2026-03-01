@@ -4,85 +4,119 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Generador Rawtext/Titleraw/Tellraw</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-  <main class="app">
-    <h1>Generador de comandos rawtext / titleraw / tellraw</h1>
-    <p class="subtitle">Minecraft Bedrock / Education</p>
+  <div class="bg-shape bg-shape-a" aria-hidden="true"></div>
+  <div class="bg-shape bg-shape-b" aria-hidden="true"></div>
 
-    <div class="row two-cols">
-      <div class="field">
-        <label for="commandType">Tipo de comando</label>
-        <select id="commandType">
-          <option value="rawtext">rawtext</option>
-          <option value="titleraw">titleraw</option>
-          <option value="tellraw">tellraw</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="contentMode">Tipo de contenido</label>
-        <select id="contentMode">
-          <option value="direct">Texto directo</option>
-          <option value="localized">Texto localizado</option>
-        </select>
-      </div>
+  <header class="hero container">
+    <h1 class="hero-title" data-i18n="app.title">Generador de comandos</h1>
+    <p class="hero-subline" data-i18n="app.subtitle">Minecraft Bedrock / Education</p>
+    <div class="lang-switch" role="group" aria-label="Language selector">
+      <button id="lang-es" type="button" class="lang-btn" data-lang="es">ES</button>
+      <button id="lang-en" type="button" class="lang-btn" data-lang="en">EN</button>
     </div>
+  </header>
 
-    <div id="targetedCommandOptions" class="row two-cols hidden">
-      <div id="targetGroup" class="field">
-        <label id="targetSelectorLabel" for="targetSelector">Selector</label>
+  <main class="container layout">
+    <section class="panel app">
+      <div class="row two-cols">
+        <div class="field">
+          <label for="commandType" data-i18n="label.commandType">Tipo de comando</label>
+          <select id="commandType">
+            <option value="rawtext">rawtext</option>
+            <option value="titleraw">titleraw</option>
+            <option value="tellraw">tellraw</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="contentMode" data-i18n="label.contentMode">Tipo de contenido</label>
+          <select id="contentMode">
+            <option id="contentModeDirect" value="direct">Texto directo</option>
+            <option id="contentModeLocalized" value="localized">Texto localizado</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="targetedCommandOptions" class="row two-cols hidden">
+        <div id="targetGroup" class="field">
+          <label id="targetSelectorLabel" for="targetSelector">Selector</label>
+          <input
+            id="targetSelector"
+            type="text"
+            value="@a"
+            placeholder="@a, @p, @e[type=...,tag=...]"
+            autocomplete="off"
+          >
+        </div>
+
+        <div id="titleModeGroup" class="field">
+          <label for="titleMode" data-i18n="label.visualization">Visualización</label>
+          <select id="titleMode">
+            <option value="title">title</option>
+            <option value="subtitle">subtitle</option>
+            <option value="actionbar">actionbar</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="localizationGroup" class="field hidden">
+        <label for="localizationKey" data-i18n="label.localizationKey">Key de localización</label>
         <input
-          id="targetSelector"
+          id="localizationKey"
           type="text"
-          value="@a"
-          placeholder="@a, @p, @e[type=...,tag=...]"
+          placeholder="dialogue.welcome"
           autocomplete="off"
         >
       </div>
 
-      <div id="titleModeGroup" class="field">
-        <label for="titleMode">Visualización</label>
-        <select id="titleMode">
-          <option value="title">title</option>
-          <option value="subtitle">subtitle</option>
-          <option value="actionbar">actionbar</option>
-        </select>
+      <div class="field">
+        <label id="visibleTextLabel" for="visibleText">Texto visible</label>
+        <textarea
+          id="visibleText"
+          rows="5"
+          placeholder="Escribe tu texto aquí. Ejemplo: §l§aHola mundo"
+        ></textarea>
       </div>
-    </div>
 
-    <div id="localizationGroup" class="hidden">
-      <label for="localizationKey">Key de localización</label>
-      <input
-        id="localizationKey"
-        type="text"
-        placeholder="dialogue.welcome"
-        autocomplete="off"
-      >
-    </div>
+      <div class="field">
+        <label for="output" data-i18n="label.output">Salida</label>
+        <textarea id="output" rows="4" readonly></textarea>
+      </div>
 
-    <label id="visibleTextLabel" for="visibleText">Texto visible</label>
-    <textarea
-      id="visibleText"
-      rows="5"
-      placeholder="Escribe tu texto aquí. Ejemplo: §l§aHola mundo"
-    ></textarea>
+      <div class="actions">
+        <button id="copyButton" type="button" class="btn btn-primary" data-i18n="button.copyCommand">Copiar comando</button>
+      </div>
 
-    <label for="output">Salida</label>
-    <textarea id="output" rows="4" readonly></textarea>
+      <div id="langSection" class="field hidden">
+        <label for="langOutput" data-i18n="label.langOutput">Salida .lang</label>
+        <textarea id="langOutput" rows="3" readonly></textarea>
+        <div class="actions">
+          <button id="copyLangButton" type="button" class="btn btn-ghost" data-i18n="button.copyLang">Copiar .lang</button>
+        </div>
+      </div>
 
-    <button id="copyButton" type="button">Copiar comando</button>
-
-    <div id="langSection" class="hidden">
-      <label for="langOutput">Salida .lang</label>
-      <textarea id="langOutput" rows="3" readonly></textarea>
-      <button id="copyLangButton" type="button" class="secondary">Copiar .lang</button>
-    </div>
-
-    <p id="status" class="status" aria-live="polite"></p>
+      <p id="status" class="status" aria-live="polite"></p>
+    </section>
   </main>
 
-  <script src="app.js"></script>
+  <footer class="container footer">
+    <p class="footer-credit">
+      <span data-i18n="footer.copyright">Copyright Nico Chiari · Powered by ☕</span>
+      <span class="footer-sep">|</span>
+      <a href="https://github.com/nchiari" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <span class="footer-sep">|</span>
+      <a href="https://www.linkedin.com/in/nicochiari/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <span class="footer-sep">|</span>
+      <a href="https://tally.so/r/KYMWkX" target="_blank" rel="noopener noreferrer" data-i18n="footer.feedback">Enviar feedback</a>
+    </p>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
 </body>
 </html>

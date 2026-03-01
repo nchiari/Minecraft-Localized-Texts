@@ -1,30 +1,30 @@
-# Generador Rawtext/Titleraw/Tellraw (Minecraft Bedrock/Education)
+# Rawtext/Titleraw/Tellraw Generator (Minecraft Bedrock/Education)
 
-Webapp sencilla en `HTML + CSS + JS` para generar:
+Simple `HTML + CSS + JS` web app to generate:
 
 - `rawtext` (JSON)
-- `/titleraw` con selector personalizado (`@a`, `@p`, `@a[tag=hola]`, etc.)
-- `/tellraw` con selector personalizado (`@a`, `@p`, `@a[tag=hola]`, etc.)
-- modo de contenido directo o localizado
-- salida extra para archivo `.lang` (`key=texto`)
+- `/titleraw` with custom selector (`@a`, `@p`, `@a[tag=hello]`, etc.)
+- `/tellraw` with custom selector (`@a`, `@p`, `@a[tag=hello]`, etc.)
+- direct or localized content mode
+- extra `.lang` output (`key=text`)
 
-## Ejecutar en Windows (doble click)
+## Run on Windows (double-click)
 
-1. Haz doble click en `Abrir Generador Minecraft.bat`.
-2. Se abrirá `webapp/index.html` en tu navegador predeterminado.
+1. Double-click `Minecraft Generator.bat`.
+2. It will open `webapp/index.html` in your default browser.
 
-También puedes abrir `webapp/index.html` directamente con doble click.
+You can also open `webapp/index.html` directly with a double-click.
 
-## Uso
+## Usage
 
-1. Elige el tipo de salida (`rawtext`, `titleraw` o `tellraw`).
-2. Elige el tipo de contenido:
-   - `Texto directo`: usa el texto visible en el JSON.
-   - `Texto localizado`: usa una `Key de localización` en el comando y genera `key=texto` para `.lang`.
-3. Si eliges `titleraw` o `tellraw`, completa el selector.
-4. Si eliges `titleraw`, completa además la `Visualización` (`title`, `subtitle` o `actionbar`).
-5. Escribe el texto:
-   - directo: texto visible (puedes usar `§`).
-   - localizado: texto que irá al archivo `.lang`.
-   - en la salida `.lang`, los saltos de línea se convierten a `%1`.
-6. Copia con `Copiar comando` y, si aplica, `Copiar .lang`.
+1. Choose the output type (`rawtext`, `titleraw`, or `tellraw`).
+2. Choose the content mode:
+   - `Direct text`: uses visible text directly in JSON.
+   - `Localized text`: uses a localization key in the command and generates `key=text` for `.lang`.
+3. If you choose `titleraw` or `tellraw`, fill in the selector.
+4. If you choose `titleraw`, also set `Display` (`title`, `subtitle`, or `actionbar`).
+5. Write your text:
+   - direct: visible text (you can use `§`).
+   - localized: text that will go into the `.lang` file.
+   - in `.lang` output, line breaks are converted to `%1`.
+6. Copy using `Copy command` and, when available, `Copy .lang`.
