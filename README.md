@@ -1,5 +1,7 @@
 # Rawtext/Titleraw/Tellraw Generator (Minecraft Bedrock/Education)
 
+Online tool: [https://nchiari.github.io/Minecraft-Localized-Texts/](https://nchiari.github.io/Minecraft-Localized-Texts/)
+
 Simple `HTML + CSS + JS` web app to generate:
 
 - `rawtext` (JSON)
